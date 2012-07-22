@@ -15,7 +15,8 @@
   , "password" : null
   }
 , "channels" :
-  [ "#chansample"
+  [ "#chanone"
+  , "#chantwo"
   ]
-, "plugins" : []
+, "plugins" : [ "google" ]
 }
