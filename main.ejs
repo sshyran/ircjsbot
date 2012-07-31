@@ -1,0 +1,25 @@
+/** @module main
+ */
+ 
+"use strict";
+
+const irc   = require("irc-js");
+const path  = require("path");
+
+const log = irc.logger.get("ircjs");
+
+await bot = irc.connect("config-dev.json");
+
+log.info("Connected!");
+
+bot.config.get("channels").forEach(bot.join);
+
+bot.config.get("plugins").forEach(function(name) {
+  const plugin = require("./plugins/" + name);
+  const status = plugin.load(bot);
+  if (status === irc.STATUS.SUCCESS) {
+    log.info("Plugin %s loaded successfully", plugin.name);
+    return;
+  }
+  log.error("Plugin %s failed to load", plugin.name);
+});
