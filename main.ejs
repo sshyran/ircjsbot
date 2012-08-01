@@ -6,9 +6,11 @@
 const irc   = require("irc-js");
 const path  = require("path");
 
-const log = irc.logger.get("ircjs");
+const log   = irc.logger.get("ircjs");
+const conf  = path.extname(process.argv[2]) == ".json" ?
+              process.argv[2] : "config.json";
 
-await bot = irc.connect("config-dev.json");
+await bot = irc.connect(conf);
 
 log.info("Connected!");
 

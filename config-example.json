@@ -1,22 +1,25 @@
-{ "die" : false
-, "encoding" : "ascii"
-, "flood-protection" : true
-, "log" : "all"
-, "nick" : "botsample"
-, "server" :
-  { "address" : "chat.freenode.net"
-  , "port" : 6667
-  , "ssl" : false
-  }
-, "user" :
-  { "hostname" : "hostsample"
-  , "realname" : "realsample"
-  , "username" : "usersample"
-  , "password" : null
-  }
-, "channels" :
-  [ "#chanone"
-  , "#chantwo"
+{
+  "die": false,
+  "encoding": "ascii",
+  "flood-protection": true,
+  "log": "all",
+  "nick": "botsample",
+  "server": {
+    "address": "chat.freenode.net",
+    "port": 6667,
+    "ssl": false
+  },
+  "user": {
+    "hostname": "hostsample",
+    "realname": "realsample",
+    "username": "usersample",
+    "password": null
+  },
+  "channels": [
+    "#chanone",
+    "#chantwo"
+  ],
+  "plugins": [
+    "google"
   ]
-, "plugins" : [ "google" ]
 }
