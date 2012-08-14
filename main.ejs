@@ -14,7 +14,9 @@ await bot = irc.connect(conf);
 
 log.info("Connected!");
 
-bot.config.get("channels").forEach(bot.join);
+bot.config.get("channels").forEach(function(name) {
+  bot.join(name);
+});
 
 bot.config.get("plugins").forEach(function(name) {
   const plugin = require("./plugins/" + name);
