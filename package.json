@@ -10,7 +10,7 @@
   "engines": { "node": ">=0.8.1" },
   "dependencies": {
     "expand": "git://github.com/nlogax/ExpandJS.git",
-    "irc-js": "git://github.com/gf3/IRC-js.git#nlogax/experimental",
+    "irc-js": "git://github.com/gf3/IRC-js.git#master",
     "redis": ">=0.7.2"
   },
   "repository": {
