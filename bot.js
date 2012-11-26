@@ -1,8 +1,28 @@
-/** @module exbot
- *  This bit of indirection is needed to use Expand syntax.
+/** @module bot
  */
-
+ 
 "use strict";
 
-require("expand");
-require("./main");
+const irc   = require("irc-js");
+const fs    = require("fs");
+const path  = require("path");
+
+const log   = irc.logger.get("ircjs");
+const conf  = path.extname(process.argv[2]) == ".json" ? process.argv[2] : "config.json";
+const json  = JSON.parse(fs.readFileSync(conf));
+
+irc.connect(conf, function(bot) {
+  json.channels.forEach(function(name) {
+    bot.join(name);
+  });
+
+  json.plugins.forEach(function(name) {
+    const plugin = require("./plugins/" + name);
+    const status = plugin.load(bot);
+    if (status === irc.STATUS.SUCCESS) {
+      log.info("Plugin %s loaded successfully", plugin.name);
+      return;
+    }
+    log.error("Plugin %s failed to load", plugin.name);
+  });
+});
