@@ -8,11 +8,11 @@ const fs    = require("fs");
 const path  = require("path");
 
 const log   = irc.logger.get("ircjs");
-const conf  = path.extname(process.argv[2]) === ".json" ? process.argv[2] : "config.json";
-const json  = JSON.parse(fs.readFileSync(conf, "utf8"));
+const conf  = require("./" + (path.extname(process.argv[2]) === ".json" ?
+                              process.argv[2] : "config.json"));
 
-irc.connect(json, function(bot) {
-  json.plugins.forEach(function(name) {
+irc.connect(conf, function(bot) {
+  conf.plugins.forEach(function(name) {
     const plugin = require("./plugins/" + name);
     const status = plugin.load(bot);
     if (status === irc.STATUS.SUCCESS) {
@@ -22,5 +22,5 @@ irc.connect(json, function(bot) {
     log.error("Plugin %s failed to load", plugin.name);
   });
 
-  bot.join(json.channels.join(","));
+  bot.join(conf.channels.join(","));
 });
