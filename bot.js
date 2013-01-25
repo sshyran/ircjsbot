@@ -25,7 +25,7 @@ irc.Message.prototype.reply = function(text) {
   } else if (this.params[0] === this.client.user.nick) {
     nick = "";
   } else {
-    nick = this.from + ": ";
+    nick = this.from.nick + ": ";
   }
   arguments[0] = nick + arguments[0];
   return oldReply.apply(this, arguments);
