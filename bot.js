@@ -12,19 +12,23 @@ const log   = irc.logger.get("ircjs");
 const conf  = require("./" + (path.extname(process.argv[2]) === ".json" ?
                               process.argv[2] : "config.json"));
 
+const PID       = process.pid;
+const PID_FILE  = "./bot.pid";
+
 // I'm a monkey and I'm not afraid to patch
 const oldReply = irc.Message.prototype.reply;
 
 irc.Message.prototype.reply = function(text) {
   let nick = this.params[1].match(/(?:@\s*([^\s]+)\s*)$/);
   if (nick) {
-    nick = nick[1] + ":";
+    nick = nick[1] + ": ";
   } else if (this.params[0] === this.client.user.nick) {
     nick = "";
   } else {
-    nick = this.from + ":";
+    nick = this.from + ": ";
   }
-  return oldReply.call(this, format("%s %s", nick, text));
+  arguments[0] = nick + arguments[0];
+  return oldReply.apply(this, arguments);
 };
 
 // Breaks if nick is changed later...
@@ -41,6 +45,13 @@ irc.Client.prototype.register = function(command, regexp, handler) {
   return this.match(re, handler);
 };
 
+// Might leave the bot in some messed up state, but let's try it
+process.on("uncaughtException", function(err) {
+  const oops = "Uncaught exception: " + err;
+  console.log(oops);
+  log.error(oops);
+});
+
 irc.connect(conf, function(bot) {
   conf.plugins.forEach(function(name) {
     const plugin = require("./plugins/" + name);
@@ -53,6 +64,13 @@ irc.connect(conf, function(bot) {
   });
 
   bot.join(conf.channels.join(","));
+
+  fs.writeFileSync(PID_FILE, PID);
+
+  // Remove pid file when exiting
+  process.on("exit", function(msg) {
+    fs.unlinkSync(PID_FILE);
+  });
 });
 
 function editDistance(a, b) {
