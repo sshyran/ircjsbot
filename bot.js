@@ -45,13 +45,6 @@ irc.Client.prototype.register = function(command, regexp, handler) {
   return this.match(re, handler);
 };
 
-// Might leave the bot in some messed up state, but let's try it
-process.on("uncaughtException", function(err) {
-  const oops = "Uncaught exception: " + err;
-  console.log(oops);
-  log.error(oops);
-});
-
 irc.connect(conf, function(bot) {
   conf.plugins.forEach(function(name) {
     const plugin = require("./plugins/" + name);
