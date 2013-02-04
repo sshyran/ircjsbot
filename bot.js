@@ -56,7 +56,9 @@ irc.connect(conf, function(bot) {
     log.error("Plugin %s failed to load", plugin.name);
   });
 
-  bot.join(conf.channels.join(","));
+  conf.channels.forEach(function(chan) {
+    bot.join(chan);
+  });
 
   fs.writeFileSync(PID_FILE, PID);
 
