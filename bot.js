@@ -33,7 +33,7 @@ irc.Message.prototype.reply = function(text) {
 
 // Breaks if nick is changed later...
 const cmdRE = "^:(?:[!\\.?`]|" + conf.nick +
-  "\\W+)%s(?:\\b%s)(?:\\s+@\\s*[^\\s]+)?";
+  "\\W+)%s(?:\\b\\s*%s)(?:\\s+@\\s*[^\\s]+)?";
 
 /** Register a command
  *  @param  {string}    command   Command name, used as trigger
