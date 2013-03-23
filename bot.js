@@ -71,7 +71,7 @@ irc.connect(conf, function(bot) {
   
   if (pluginNames.length !== 0) {
     // Create a response for 'help' if there are any plugins that support it.
-    bot.match(/\bh(?:elp)$/i, function(msg) {
+    bot.match(/^:h(?:elp)$/i, function(msg) {
       msg.reply("Type " + conf.nick + " help [topic] for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
     });
   }
