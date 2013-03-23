@@ -69,10 +69,12 @@ irc.connect(conf, function(bot) {
     log.error("Plugin %s failed to load", plugin.name);
   });
   
-  // Create a response for 'help'.
-  bot.match(/\bh(?:elp)$/i, function(msg) {
-    msg.reply("Type " + conf.nick + " help [topic] for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
-  });
+  if (pluginNames.length !== 0) {
+    // Create a response for 'help' if there are any plugins that support it.
+    bot.match(/\bh(?:elp)$/i, function(msg) {
+      msg.reply("Type " + conf.nick + " help [topic] for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
+    });
+  }
 
   conf.channels.forEach(function(chan) {
     bot.join(chan);
