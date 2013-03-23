@@ -46,14 +46,32 @@ irc.Client.prototype.register = function(command, regexp, handler) {
 };
 
 irc.connect(conf, function(bot) {
+  const pluginNames = [];
   conf.plugins.forEach(function(name) {
     const plugin = require("./plugins/" + name);
     const status = plugin.load(bot);
+
+    // If we have help for this plugin let's add it to the available list.
+    if (typeof plugin.help !== 'undefined') {
+      pluginNames.push(plugin.name);
+
+      // Create a response for 'help [topic]'.
+      var re = new RegExp('help ' + plugin.name, "i");
+      bot.match(re, function(msg) {
+        msg.reply(plugin.help);
+      });
+    }
+
     if (status === irc.STATUS.SUCCESS) {
       log.info("Plugin %s loaded successfully", plugin.name);
       return;
     }
     log.error("Plugin %s failed to load", plugin.name);
+  });
+  
+  // Create a response for 'help'.
+  bot.match(/\bh(?:elp)$/i, function(msg) {
+    msg.reply("Type " + conf.nick + " help [topic] for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
   });
 
   conf.channels.forEach(function(chan) {
