@@ -14,6 +14,15 @@ There is a plugin API in development and some plugins [over here](https://github
 If you want to use them, run `git submodule update --init` and you should get a `plugin` directory with plugins in it.
 Then just add the ones you want to the configuration file.
 
+There is a 'help' command that ships with the bot and can be extended by the plugins. To execute the help command, type `[botname] help` (where [botname] is the name you've given your bot) in the IRC channel your bot has joined. Plugins can then `exports.help = "help text"` and the bot will list them as having an available help command. For example:
+
+    command: [botname] help
+    response: Type [botname] help [topic] for detailed help on a topic. Available topics are 'Factoid', 'Google', 'Seen'.
+
+    command: [botname] help Google
+    response: Get the first result from Google with "google [term]" or "g [term]".
+
+
 ## Contributing
 Things that need work, which would improve [IRC-js](https://github.com/gf3/IRC-js/tree/master) and this project a lot:
 
