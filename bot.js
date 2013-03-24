@@ -56,8 +56,9 @@ irc.connect(conf, function(bot) {
       pluginNames.push(plugin.name);
 
       // Create a response for 'help [topic]'.
-      var re = new RegExp('help ' + plugin.name, "i");
-      bot.match(re, function(msg) {
+      var pluginRE = new RegExp("^:" + bot.user.nick + "(.*?)\\s+h(?:elp)\\s+(" + plugin.name + ")$", "i");
+      console.log(pluginRE);
+      bot.match(pluginRE, function(msg) {
         msg.reply(plugin.help);
       });
     }
@@ -71,8 +72,10 @@ irc.connect(conf, function(bot) {
   
   if (pluginNames.length !== 0) {
     // Create a response for 'help' if there are any plugins that support it.
-    bot.match(/^:h(?:elp)$/i, function(msg) {
-      msg.reply("Type \"help [topic]\" for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
+    var helpRE = new RegExp("^:" + bot.user.nick + "(.*?)\\s+h(?:elp)$", "i");
+    console.log(helpRE);
+    bot.match(helpRE, function(msg) {
+      msg.reply("Type \"" + bot.user.nick +" help [topic]\" for detailed help on a topic. Available topics are " + pluginNames.join(', ') + ".");
     });
   }
 
